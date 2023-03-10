@@ -85,7 +85,7 @@ export class MochaJsonParser implements TestParser {
     let path
     let line
 
-    const src = getExceptionSource(details, this.options.trackedFiles, file => this.getRelativePath(file))
+    const src = getExceptionSource(details, this.options.trackedFiles)
     if (src) {
       path = src.path
       line = src.line

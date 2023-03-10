@@ -3,7 +3,6 @@ import {parseStringPromise} from 'xml2js'
 
 import {NunitReport, TestCase, TestSuite} from './dotnet-nunit-types'
 import {getExceptionSource} from '../../utils/node-utils'
-import {getBasePath, normalizeFilePath} from '../../utils/path-utils'
 
 import {
   TestExecutionResult,
@@ -15,8 +14,6 @@ import {
 } from '../../test-results'
 
 export class DotNetNunitParser implements TestParser {
-  assumedWorkDir: string | undefined
-
   constructor(readonly options: ParseOptions) {}
 
   async parse(path: string, content: string): Promise<TestRunResult> {
@@ -115,9 +112,7 @@ export class DotNetNunitParser implements TestParser {
     let line
 
     if (details['stack-trace'] !== undefined && details['stack-trace'].length > 0) {
-      const src = getExceptionSource(details['stack-trace'][0], this.options.trackedFiles, file =>
-        this.getRelativePath(file)
-      )
+      const src = getExceptionSource(details['stack-trace'][0], this.options.trackedFiles)
       if (src) {
         path = src.path
         line = src.line
@@ -130,22 +125,5 @@ export class DotNetNunitParser implements TestParser {
       message: details.message && details.message.length > 0 ? details.message[0] : '',
       details: details['stack-trace'] && details['stack-trace'].length > 0 ? details['stack-trace'][0] : ''
     }
-  }
-
-  private getRelativePath(path: string): string {
-    path = normalizeFilePath(path)
-    const workDir = this.getWorkDir(path)
-    if (workDir !== undefined && path.startsWith(workDir)) {
-      path = path.substr(workDir.length)
-    }
-    return path
-  }
-
-  private getWorkDir(path: string): string | undefined {
-    return (
-      this.options.workDir ??
-      this.assumedWorkDir ??
-      (this.assumedWorkDir = getBasePath(path, this.options.trackedFiles))
-    )
   }
 }

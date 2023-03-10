@@ -3,7 +3,6 @@ import {parseStringPromise} from 'xml2js'
 
 import {JunitReport, TestCase, TestSuite} from './jest-junit-types'
 import {getExceptionSource} from '../../utils/node-utils'
-import {getBasePath, normalizeFilePath} from '../../utils/path-utils'
 
 import {
   TestExecutionResult,
@@ -15,8 +14,6 @@ import {
 } from '../../test-results'
 
 export class JestJunitParser implements TestParser {
-  assumedWorkDir: string | undefined
-
   constructor(readonly options: ParseOptions) {}
 
   async parse(path: string, content: string): Promise<TestRunResult> {
@@ -89,7 +86,7 @@ export class JestJunitParser implements TestParser {
     let path
     let line
 
-    const src = getExceptionSource(details, this.options.trackedFiles, file => this.getRelativePath(file))
+    const src = getExceptionSource(details, this.options.trackedFiles)
     if (src) {
       path = src.path
       line = src.line
@@ -100,22 +97,5 @@ export class JestJunitParser implements TestParser {
       line,
       details
     }
-  }
-
-  private getRelativePath(path: string): string {
-    path = normalizeFilePath(path)
-    const workDir = this.getWorkDir(path)
-    if (workDir !== undefined && path.startsWith(workDir)) {
-      path = path.substr(workDir.length)
-    }
-    return path
-  }
-
-  private getWorkDir(path: string): string | undefined {
-    return (
-      this.options.workDir ??
-      this.assumedWorkDir ??
-      (this.assumedWorkDir = getBasePath(path, this.options.trackedFiles))
-    )
   }
 }
