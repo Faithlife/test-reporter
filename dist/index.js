@@ -787,13 +787,13 @@ class DotNetNunitParser {
     addTestCase(result, suitePath, testCase) {
         // The last suite in the suite path is the "group".
         // The rest are concatenated together to form the "suite".
-        // But ignore "Theory" suites.
-        const suitesWithoutTheories = suitePath.filter(suite => suite.$.type !== 'Theory');
-        const suiteName = suitesWithoutTheories
-            .slice(0, suitesWithoutTheories.length - 1)
+        // But ignore "Theory," "ParameterizedMethod," and "GenericMethod" suites.
+        const suiteParents = suitePath.filter(suite => suite.$.type !== 'Theory' && suite.$.type !== 'ParameterizedMethod' && suite.$.type !== 'GenericMethod');
+        const suiteName = suiteParents
+            .slice(0, suiteParents.length - 1)
             .map(suite => suite.$.name)
             .join('.');
-        const groupName = suitesWithoutTheories[suitesWithoutTheories.length - 1].$.name;
+        const groupName = suiteParents[suiteParents.length - 1].$.name;
         let existingSuite = result.find(existingSuite => existingSuite.name === suiteName);
         if (existingSuite === undefined) {
             existingSuite = new test_results_1.TestSuiteResult(suiteName, []);
@@ -1743,11 +1743,12 @@ function getSuitesReport(tr, runIndex, options) {
         ? `**${tr.tests}** tests were completed in **${time}** with **${tr.passed}** passed, **${tr.failed}** failed and **${tr.skipped}** skipped.`
         : 'No tests found';
     sections.push(headingLine2);
+    const trimName = tr.suites.every(s => s.name.startsWith(tr.path + '.'));
     const suites = options.listSuites === 'failed' ? tr.failedSuites : tr.suites;
     if (suites.length > 0) {
         const suitesTable = (0, markdown_utils_1.table)(['Test suite', 'Passed', 'Failed', 'Skipped', 'Time'], [markdown_utils_1.Align.Left, markdown_utils_1.Align.Right, markdown_utils_1.Align.Right, markdown_utils_1.Align.Right, markdown_utils_1.Align.Right], ...suites.map((s, suiteIndex) => {
             const tsTime = (0, markdown_utils_1.formatTime)(s.time);
-            const tsName = s.name;
+            const tsName = trimName ? s.name.substring(tr.path.length + 1) : s.name;
             const skipLink = options.listTests === 'none' || (options.listTests === 'failed' && s.result !== 'failed');
             const tsAddr = options.baseUrl + makeSuiteSlug(runIndex, suiteIndex).link;
             const tsNameLink = skipLink ? tsName : (0, markdown_utils_1.link)(tsName, tsAddr);

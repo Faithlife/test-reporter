@@ -177,6 +177,7 @@ function getSuitesReport(tr: TestRunResult, runIndex: number, options: ReportOpt
       : 'No tests found'
   sections.push(headingLine2)
 
+  const trimName = tr.suites.every(s => s.name.startsWith(tr.path + '.'))
   const suites = options.listSuites === 'failed' ? tr.failedSuites : tr.suites
   if (suites.length > 0) {
     const suitesTable = table(
@@ -184,7 +185,7 @@ function getSuitesReport(tr: TestRunResult, runIndex: number, options: ReportOpt
       [Align.Left, Align.Right, Align.Right, Align.Right, Align.Right],
       ...suites.map((s, suiteIndex) => {
         const tsTime = formatTime(s.time)
-        const tsName = s.name
+        const tsName = trimName ? s.name.substring(tr.path.length + 1) : s.name
         const skipLink = options.listTests === 'none' || (options.listTests === 'failed' && s.result !== 'failed')
         const tsAddr = options.baseUrl + makeSuiteSlug(runIndex, suiteIndex).link
         const tsNameLink = skipLink ? tsName : link(tsName, tsAddr)

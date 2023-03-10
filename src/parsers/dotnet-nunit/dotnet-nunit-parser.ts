@@ -76,13 +76,15 @@ export class DotNetNunitParser implements TestParser {
   private addTestCase(result: TestSuiteResult[], suitePath: TestSuite[], testCase: TestCase): void {
     // The last suite in the suite path is the "group".
     // The rest are concatenated together to form the "suite".
-    // But ignore "Theory" suites.
-    const suitesWithoutTheories = suitePath.filter(suite => suite.$.type !== 'Theory')
-    const suiteName = suitesWithoutTheories
-      .slice(0, suitesWithoutTheories.length - 1)
+    // But ignore "Theory," "ParameterizedMethod," and "GenericMethod" suites.
+    const suiteParents = suitePath.filter(
+      suite => suite.$.type !== 'Theory' && suite.$.type !== 'ParameterizedMethod' && suite.$.type !== 'GenericMethod'
+    )
+    const suiteName = suiteParents
+      .slice(0, suiteParents.length - 1)
       .map(suite => suite.$.name)
       .join('.')
-    const groupName = suitesWithoutTheories[suitesWithoutTheories.length - 1].$.name
+    const groupName = suiteParents[suiteParents.length - 1].$.name
 
     let existingSuite = result.find(existingSuite => existingSuite.name === suiteName)
     if (existingSuite === undefined) {
