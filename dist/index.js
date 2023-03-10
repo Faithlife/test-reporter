@@ -756,9 +756,13 @@ class DotNetNunitParser {
     getTestRunResult(path, nunit) {
         const suites = [];
         const time = parseFloat(nunit['test-run'].$.duration) * 1000;
-        // Ignore single "Assembly" suites at root
+        // Use single "Assembly" suites at root as the path
         let testSuites = nunit['test-run']['test-suite'];
         if (testSuites && testSuites.length === 1 && testSuites[0].$.type === 'Assembly') {
+            path = testSuites[0].$.name;
+            if (path.endsWith('.dll')) {
+                path = path.substring(0, path.length - 4);
+            }
             testSuites = testSuites[0]['test-suite'];
         }
         this.populateTestCasesRecursive(suites, [], testSuites);

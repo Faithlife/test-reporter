@@ -1,5 +1,5 @@
 ![Tests failed](https://img.shields.io/badge/tests-3%20passed%2C%205%20failed%2C%201%20skipped-critical)
-## ❌ <a id="user-content-r0" href="#r0">fixtures/dotnet-nunit.xml</a>
+## ❌ <a id="user-content-r0" href="#r0">DotnetTests.NUnitV3Tests</a>
 **9** tests were completed in **230ms** with **3** passed, **5** failed and **1** skipped.
 |Test suite|Passed|Failed|Skipped|Time|
 |:---|---:|---:|---:|---:|
