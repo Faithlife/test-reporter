@@ -4,6 +4,7 @@ export interface ParseOptions {
   parseErrors: boolean
   workDir?: string
   trackedFiles: string[]
+  debug?: (message: string) => void | undefined
 }
 
 export interface TestParser {

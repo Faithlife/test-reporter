@@ -117,6 +117,13 @@ export class DotNetNunitParser implements TestParser {
         path = src.path
         line = src.line
       }
+      if (this.options.debug) {
+        this.options.debug(`name: ${tc.$.name} trace: ${details['stack-trace'][0]} path: ${path} line: ${line}`)
+      }
+    } else {
+      if (this.options.debug) {
+        this.options.debug(`no stack-trace in ${tc.$.name}`)
+      }
     }
 
     return {
