@@ -1784,11 +1784,18 @@ function getTestsReport(ts, runIndex, suiteIndex, options) {
     sections.push(`### ${icon}\xa0${tsNameLink}`);
     sections.push('```');
     for (const grp of groups) {
+        let tests = grp.tests;
+        if (options.listTests === 'failed') {
+            tests = tests.filter(tc => tc.result === 'failed');
+        }
+        if (tests.length === 0) {
+            continue;
+        }
         if (grp.name) {
             sections.push(grp.name);
         }
         const space = grp.name ? '  ' : '';
-        for (const tc of grp.tests) {
+        for (const tc of tests) {
             const result = getResultIcon(tc.result);
             sections.push(`${space}${result} ${tc.name}`);
             if (tc.error) {
