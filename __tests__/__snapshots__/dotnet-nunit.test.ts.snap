@@ -98,7 +98,7 @@ TestRunResult {
           ],
         },
       ],
-      "name": "DotnetTests.NUnitV3Tests.dll.DotnetTests.XUnitTests",
+      "name": "DotnetTests.XUnitTests",
       "totalTime": undefined,
     },
   ],

@@ -33,7 +33,13 @@ export class DotNetNunitParser implements TestParser {
     const suites: TestSuiteResult[] = []
     const time = parseFloat(nunit['test-run'].$.duration) * 1000
 
-    this.populateTestCasesRecursive(suites, [], nunit['test-run']['test-suite'])
+    // Ignore single "Assembly" suites at root
+    let testSuites = nunit['test-run']['test-suite']
+    if (testSuites && testSuites.length === 1 && testSuites[0].$.type === 'Assembly') {
+      testSuites = testSuites[0]['test-suite']
+    }
+
+    this.populateTestCasesRecursive(suites, [], testSuites)
 
     return new TestRunResult(path, suites, time)
   }
