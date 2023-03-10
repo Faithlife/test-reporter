@@ -100,8 +100,7 @@ class TestReporter {
     const options: ParseOptions = {
       workDir,
       trackedFiles,
-      parseErrors,
-      debug: core.debug
+      parseErrors
     }
 
     core.info(`Using test report parser '${this.reporter}'`)
@@ -154,7 +153,6 @@ class TestReporter {
     for (const {file, content} of files) {
       try {
         const tr = await parser.parse(file, content)
-        core.debug(JSON.stringify(tr))
         results.push(tr)
       } catch (error) {
         core.error(`Processing test results from ${file} failed`)
@@ -182,7 +180,6 @@ class TestReporter {
     core.info('Creating annotations')
     const annotations = getAnnotations(results, this.maxAnnotations)
 
-    core.debug(JSON.stringify(annotations))
     const isFailed = this.failOnError && results.some(tr => tr.result === 'failed')
     const conclusion = isFailed ? 'failure' : 'success'
     const icon = isFailed ? Icon.fail : Icon.success
