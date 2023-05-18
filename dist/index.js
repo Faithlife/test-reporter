@@ -198,12 +198,17 @@ exports.LocalFileProvider = void 0;
 const fs = __importStar(__nccwpck_require__(9896));
 const fast_glob_1 = __importDefault(__nccwpck_require__(5648));
 const git_1 = __nccwpck_require__(5454);
+const github_utils_1 = __nccwpck_require__(6667);
 class LocalFileProvider {
     name;
     pattern;
-    constructor(name, pattern) {
+    octokit;
+    sha;
+    constructor(name, pattern, octokit, sha) {
         this.name = name;
         this.pattern = pattern;
+        this.octokit = octokit;
+        this.sha = sha;
     }
     async load() {
         const result = [];
@@ -217,7 +222,7 @@ class LocalFileProvider {
         return { [this.name]: result };
     }
     async listTrackedFiles() {
-        return (0, git_1.listFiles)();
+        return (await (0, git_1.isInsideWorkTree)()) ? await (0, git_1.listFiles)() : await (0, github_utils_1.listFiles)(this.octokit, this.sha);
     }
 }
 exports.LocalFileProvider = LocalFileProvider;
@@ -345,7 +350,7 @@ class TestReporter {
         const pattern = this.pathReplaceBackslashes ? pathsList.map(path_utils_1.normalizeFilePath) : pathsList;
         const inputProvider = this.artifact
             ? new artifact_provider_1.ArtifactProvider(this.octokit, this.artifact, this.name, pattern, this.context.sha, this.context.runId, this.token)
-            : new local_file_provider_1.LocalFileProvider(this.name, pattern);
+            : new local_file_provider_1.LocalFileProvider(this.name, pattern, this.octokit, this.context.sha);
         const parseErrors = this.maxAnnotations > 0;
         const trackedFiles = parseErrors ? await inputProvider.listTrackedFiles() : [];
         const workDir = this.artifact ? undefined : (0, path_utils_1.normalizeDirPath)(process.cwd(), true);
@@ -2371,9 +2376,18 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.isInsideWorkTree = isInsideWorkTree;
 exports.listFiles = listFiles;
 const core = __importStar(__nccwpck_require__(7484));
 const exec_1 = __nccwpck_require__(5236);
+async function isInsideWorkTree() {
+    const responseCode = await (0, exec_1.exec)('git', ['rev-parse', '--is-inside-work-tree'], {
+        silent: true,
+        failOnStdErr: false,
+        ignoreReturnCode: true
+    });
+    return responseCode === 0;
+}
 async function listFiles() {
     core.startGroup('Listing all files tracked by git');
     let output = '';

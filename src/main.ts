@@ -101,7 +101,7 @@ class TestReporter {
           this.context.runId,
           this.token
         )
-      : new LocalFileProvider(this.name, pattern)
+      : new LocalFileProvider(this.name, pattern, this.octokit, this.context.sha)
 
     const parseErrors = this.maxAnnotations > 0
     const trackedFiles = parseErrors ? await inputProvider.listTrackedFiles() : []

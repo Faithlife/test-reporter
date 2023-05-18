@@ -1,5 +1,15 @@
 import * as core from '@actions/core'
-import {getExecOutput} from '@actions/exec'
+import {exec, getExecOutput} from '@actions/exec'
+
+export async function isInsideWorkTree(): Promise<boolean> {
+  const responseCode = await exec('git', ['rev-parse', '--is-inside-work-tree'], {
+    silent: true,
+    failOnStdErr: false,
+    ignoreReturnCode: true
+  })
+
+  return responseCode === 0
+}
 
 export async function listFiles(): Promise<string[]> {
   core.startGroup('Listing all files tracked by git')

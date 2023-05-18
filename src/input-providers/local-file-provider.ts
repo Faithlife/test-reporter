@@ -1,12 +1,16 @@
 import * as fs from 'fs'
 import glob from 'fast-glob'
 import {FileContent, InputProvider, ReportInput} from './input-provider'
-import {listFiles} from '../utils/git'
+import {listFiles as localListFiles, isInsideWorkTree} from '../utils/git'
+import {listFiles as apiListFiles} from '../utils/github-utils'
+import {GitHub} from '@actions/github/lib/utils'
 
 export class LocalFileProvider implements InputProvider {
   constructor(
     readonly name: string,
-    readonly pattern: string[]
+    readonly pattern: string[],
+    readonly octokit: InstanceType<typeof GitHub>,
+    readonly sha: string
   ) {}
 
   async load(): Promise<ReportInput> {
@@ -23,6 +27,6 @@ export class LocalFileProvider implements InputProvider {
   }
 
   async listTrackedFiles(): Promise<string[]> {
-    return listFiles()
+    return (await isInsideWorkTree()) ? await localListFiles() : await apiListFiles(this.octokit, this.sha)
   }
 }
