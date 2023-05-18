@@ -11,19 +11,71 @@ on:
 jobs:
   build-test:
     name: Build & Test
-    runs-on: ubuntu-latest
+    runs-on: [cloud, linux]
     steps:
       - uses: actions/checkout@v2
-      - run: node --version
+
+      - name: Set Node.js 16.x
+        uses: actions/setup-node@v3.5.1
+        with:
+          node-version: 16.x
+
       - run: npm ci
       - run: npm run build
       - run: npm run format-check
       - run: npm run lint
       - run: npm test
 
-      - name: Upload test results
-        if: success() || failure()
+      - name: Inline Test
+        uses: ./
+        if: always()
+        with:
+          name: Inline
+          path: '*.xml'
+          reporter: jest-junit
+
+      - name: Upload Test Results
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: test-results
           path: __tests__/__results__/*.xml
+
+      - name: Cache Test Results
+        uses: actions/cache@v3
+        with:
+          path: .
+          key: ${{ github.sha }}-test-results
+
+  artifact:
+    name: Same-Workflow Artifact Test
+    needs: build-test
+    runs-on: [cloud, linux]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ./
+      with:
+        artifact: test-results
+        name: Same-Workflow Artifact
+        path: '*.xml'
+        reporter: jest-junit
+
+  cache:
+    name: Cache Test
+    needs: build-test
+    runs-on: [cloud, linux]
+    steps:
+      - name: Restore Cache
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: .
+          key: ${{ github.sha }}-test-results
+
+      - name: Inline Test
+        uses: ./
+        if: steps.cache.outputs.cache-hit == 'true'
+        with:
+          name: Cache
+          path: '*.xml'
+          reporter: jest-junit
