@@ -8,11 +8,6 @@ on:
       - main
   workflow_dispatch:
 
-permissions:
-  contents: read
-  checks: write
-  actions: write
-
 jobs:
   build-test:
     name: Build & Test
@@ -33,7 +28,7 @@ jobs:
 
       - name: Publish Test Results
         uses: ./
-        if: always()
+        if: always() && github.event_name != 'pull_request'
         with:
           name: Same-Job Test Results
           path: __tests__/__results__/*.xml
@@ -48,7 +43,7 @@ jobs:
           retention-days: 1
 
       - name: Upload Action
-        if: always()
+        if: always() && github.event_name != 'pull_request'
         uses: actions/upload-artifact@v3
         with:
           name: action
@@ -60,7 +55,7 @@ jobs:
   artifact:
     name: Same-Workflow Artifact Test
     needs: build-test
-    if: always()
+    if: always() && github.event_name != 'pull_request'
     runs-on: [cloud, linux]
     steps:
       - name: Download Artifacts
