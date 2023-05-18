@@ -1,4 +1,4 @@
-name: Test Report
+name: Workflow-Run Arifact Test
 
 on:
   workflow_run:
@@ -7,14 +7,16 @@ on:
       - completed
 
 jobs:
-  report:
-    name: Workflow-Run Test
+  artifact:
+    name: Workflow-Run Arifact Test
     runs-on: [cloud, linux]
     steps:
-    - uses: actions/checkout@v2
-    - uses: ./
+    - uses: actions/checkout@v3
+
+    - name: Publish Test Results
+      uses: ./
       with:
         artifact: test-results
-        name: Workflow-Run Artifact
+        name: Workflow-Run Test Results
         path: '*.xml'
         reporter: jest-junit

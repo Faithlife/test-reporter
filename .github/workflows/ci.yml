@@ -26,60 +26,44 @@ jobs:
       - run: npm run lint
       - run: npm test
 
-      - name: Inline Test
+      - name: Publish Test Results
         uses: ./
         if: always()
         with:
-          name: Inline
+          name: Same-Job Test Results
           path: __tests__/__results__/*.xml
           reporter: jest-junit
 
       - name: Upload Test Results
-        uses: actions/upload-artifact@v2
+        if: always()
+        uses: actions/upload-artifact@v3
         with:
           name: test-results
           path: __tests__/__results__/*.xml
+          retention-days: 1
 
-      - name: Cache Test Results
-        uses: actions/cache@v3
+      - name: Upload Action
+        if: always()
+        uses: actions/upload-artifact@v3
         with:
+          name: action
           path: |
             action.yml
             dist/index.js
-            __tests__/__results__/*.xml
-          key: ${{ github.sha }}-test-results
+          retention-days: 1
 
   artifact:
     name: Same-Workflow Artifact Test
     needs: build-test
+    if: always()
     runs-on: [cloud, linux]
     steps:
-    - uses: actions/checkout@v2
-    - uses: ./
-      with:
-        artifact: test-results
-        name: Same-Workflow Artifact
-        path: '*.xml'
-        reporter: jest-junit
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
 
-  cache:
-    name: Cache Test
-    needs: build-test
-    runs-on: [cloud, linux]
-    steps:
-      - name: Restore Cache
-        id: cache
-        uses: actions/cache@v3
+      - name: Publish Test Results
+        uses: ./action/
         with:
-          path: |
-            action.yml
-            dist/index.js
-            __tests__/__results__/*.xml
-          key: ${{ github.sha }}-test-results
-
-      - name: Inline Test
-        uses: ./
-        with:
-          name: Cache
-          path: __tests__/__results__/*.xml
+          name: Same-Workflow Test Results
+          path: 'test-results/*.xml'
           reporter: jest-junit
