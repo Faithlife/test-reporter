@@ -59,7 +59,7 @@ jobs:
       with:
         artifact: test-results
         name: Same-Workflow Artifact
-        path: __tests__/__results__/*.xml
+        path: '*.xml'
         reporter: jest-junit
 
   cache:
@@ -71,12 +71,14 @@ jobs:
         id: cache
         uses: actions/cache@v3
         with:
-          path: .
+          path: |
+            action.yml
+            dist/index.js
+            __tests__/__results__/*.xml
           key: ${{ github.sha }}-test-results
 
       - name: Inline Test
         uses: ./
-        if: steps.cache.outputs.cache-hit == 'true'
         with:
           name: Cache
           path: __tests__/__results__/*.xml
