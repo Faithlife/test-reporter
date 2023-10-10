@@ -1356,7 +1356,8 @@ class JestJunitParser {
         if (!this.options.parseErrors || !tc.failure) {
             return undefined;
         }
-        const details = tc.failure[0];
+        const failure = tc.failure[0];
+        const details = typeof failure === 'string' ? failure : failure._;
         let path;
         let line;
         const src = (0, node_utils_1.getExceptionSource)(details, this.options.trackedFiles);

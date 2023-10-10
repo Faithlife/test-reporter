@@ -29,6 +29,14 @@ export interface TestCase {
     name: string
     time: string
   }
-  failure?: string[]
+  failure?: string[] | CypressTestFailure[]
   skipped?: string[]
+}
+
+interface CypressTestFailure {
+  _: string
+  $: {
+    message: string
+    type: string
+  }
 }

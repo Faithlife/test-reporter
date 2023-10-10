@@ -1,5 +1,114 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`jest-junit tests handles Cypress test failures 1`] = `
+TestRunResult {
+  "path": "fixtures/cypress-junit.xml",
+  "suites": Array [
+    TestSuiteResult {
+      "groups": Array [],
+      "name": "",
+      "totalTime": 0,
+    },
+    TestSuiteResult {
+      "groups": Array [
+        TestGroupResult {
+          "name": "newsfeed",
+          "tests": Array [
+            TestCaseResult {
+              "error": Object {
+                "details": "TestingLibraryElementError: Timed out retrying after 4000ms: Unable to find an element with the text: Check out this cool verse on Biblia:. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+    at Object.getElementError (https://internal.faithlife.com/__cypress/tests?p=cypress\\\\support\\\\index.js:96559:17)
+    at eval (https://internal.faithlife.com/__cypress/tests?p=cypress\\\\support\\\\index.js:97524:25)
+    at eval (https://internal.faithlife.com/__cypress/tests?p=cypress\\\\support\\\\index.js:97496:24)
+    at eval (https://internal.faithlife.com/__cypress/tests?p=cypress\\\\support\\\\index.js:97549:25)
+    at baseCommandImpl (https://internal.faithlife.com/__cypress/tests?p=cypress\\\\support\\\\index.js:95917:16)
+    at commandImpl (https://internal.faithlife.com/__cypress/tests?p=cypress\\\\support\\\\index.js:95920:40)
+    at getValue (https://internal.faithlife.com/__cypress/tests?p=cypress\\\\support\\\\index.js:95944:23)
+    at resolveValue (https://internal.faithlife.com/__cypress/tests?p=cypress\\\\support\\\\index.js:95984:35)",
+                "line": undefined,
+                "path": undefined,
+              },
+              "name": "should handle biblia sharing",
+              "result": "failed",
+              "time": 0,
+            },
+            TestCaseResult {
+              "error": undefined,
+              "name": "should poll for newsfeed items",
+              "result": "success",
+              "time": 19376,
+            },
+            TestCaseResult {
+              "error": undefined,
+              "name": "should be able to create and edit a post in a group",
+              "result": "success",
+              "time": 10697,
+            },
+            TestCaseResult {
+              "error": undefined,
+              "name": "should be able to create a post from the main newsfeed",
+              "result": "success",
+              "time": 7125,
+            },
+            TestCaseResult {
+              "error": undefined,
+              "name": "should be able to create a post with a URL and display opengraph data",
+              "result": "success",
+              "time": 13470,
+            },
+            TestCaseResult {
+              "error": undefined,
+              "name": "should be able to mention another user in a post",
+              "result": "success",
+              "time": 10100,
+            },
+            TestCaseResult {
+              "error": undefined,
+              "name": "should be able to flag a comment as inappropriate",
+              "result": "success",
+              "time": 13415,
+            },
+            TestCaseResult {
+              "error": undefined,
+              "name": "should support creating and editing an article post",
+              "result": "success",
+              "time": 29164,
+            },
+            TestCaseResult {
+              "error": undefined,
+              "name": "should be able to delete a comment",
+              "result": "success",
+              "time": 13242,
+            },
+            TestCaseResult {
+              "error": undefined,
+              "name": "should be able to pin and un-pin a post",
+              "result": "success",
+              "time": 12310,
+            },
+            TestCaseResult {
+              "error": undefined,
+              "name": "should be able to create and edit a prayer post",
+              "result": "success",
+              "time": 9733,
+            },
+            TestCaseResult {
+              "error": undefined,
+              "name": "should be able to search for hashtags within comments",
+              "result": "success",
+              "time": 12552,
+            },
+          ],
+        },
+      ],
+      "name": "Root Suite.newsfeed",
+      "totalTime": 151184,
+    },
+  ],
+  "totalTime": 151184,
+}
+`;
+
 exports[`jest-junit tests report from ./reports/jest test results matches snapshot 1`] = `
 TestRunResult {
   "path": "fixtures/jest-junit.xml",

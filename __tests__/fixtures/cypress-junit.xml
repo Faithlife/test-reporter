@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="151.1840" tests="21" failures="3" skipped="7">
+  <testsuite name="" timestamp="2023-10-04T22:51:23" tests="0" file="cypress/e2e/news-feed.js" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Root Suite.newsfeed" timestamp="2023-10-04T22:51:23" tests="21" time="151.1840" failures="3">
+    <testcase name="should handle biblia sharing" time="0.0000" classname="newsfeed">
+      <failure message="Timed out retrying after 4000ms: Unable to find an element with the text: Check out this cool verse on Biblia:. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible." type="TestingLibraryElementError"><![CDATA[TestingLibraryElementError: Timed out retrying after 4000ms: Unable to find an element with the text: Check out this cool verse on Biblia:. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+    at Object.getElementError (https://internal.faithlife.com/__cypress/tests?p=cypress\support\index.js:96559:17)
+    at eval (https://internal.faithlife.com/__cypress/tests?p=cypress\support\index.js:97524:25)
+    at eval (https://internal.faithlife.com/__cypress/tests?p=cypress\support\index.js:97496:24)
+    at eval (https://internal.faithlife.com/__cypress/tests?p=cypress\support\index.js:97549:25)
+    at baseCommandImpl (https://internal.faithlife.com/__cypress/tests?p=cypress\support\index.js:95917:16)
+    at commandImpl (https://internal.faithlife.com/__cypress/tests?p=cypress\support\index.js:95920:40)
+    at getValue (https://internal.faithlife.com/__cypress/tests?p=cypress\support\index.js:95944:23)
+    at resolveValue (https://internal.faithlife.com/__cypress/tests?p=cypress\support\index.js:95984:35)]]></failure>
+    </testcase>
+    <testcase name="should poll for newsfeed items" time="19.3760" classname="newsfeed">
+    </testcase>
+    <testcase name="should be able to create and edit a post in a group" time="10.6970" classname="newsfeed">
+    </testcase>
+    <testcase name="should be able to create a post from the main newsfeed" time="7.1250" classname="newsfeed">
+    </testcase>
+    <testcase name="should be able to create a post with a URL and display opengraph data" time="13.4700" classname="newsfeed">
+    </testcase>
+    <testcase name="should be able to mention another user in a post" time="10.1000" classname="newsfeed">
+    </testcase>
+    <testcase name="should be able to flag a comment as inappropriate" time="13.4150" classname="newsfeed">
+    </testcase>
+    <testcase name="should support creating and editing an article post" time="29.1640" classname="newsfeed">
+    </testcase>
+    <testcase name="should be able to delete a comment" time="13.2420" classname="newsfeed">
+    </testcase>
+    <testcase name="should be able to pin and un-pin a post" time="12.3100" classname="newsfeed">
+    </testcase>
+    <testcase name="should be able to create and edit a prayer post" time="9.7330" classname="newsfeed">
+    </testcase>
+    <testcase name="should be able to search for hashtags within comments" time="12.5520" classname="newsfeed">
+    </testcase>
+  </testsuite>
+</testsuites>

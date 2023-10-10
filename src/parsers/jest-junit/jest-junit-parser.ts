@@ -82,7 +82,8 @@ export class JestJunitParser implements TestParser {
       return undefined
     }
 
-    const details = tc.failure[0]
+    const failure = tc.failure[0]
+    const details = typeof failure === 'string' ? failure : failure._
     let path
     let line
 
