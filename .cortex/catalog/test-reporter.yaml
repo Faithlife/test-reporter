@@ -1,0 +1,15 @@
+openapi: 3.0.1
+info:
+  title: test-reporter
+  x-cortex-tag: test-reporter
+  x-cortex-type: service
+  x-cortex-owners:
+  - name: team-developer-enablement
+    type: group
+    provider: CORTEX
+  x-cortex-git:
+    github:
+      repository: Logos/test-reporter
+      alias: logos-ghes-logos
+  x-cortex-groups:
+  - parentrepository
