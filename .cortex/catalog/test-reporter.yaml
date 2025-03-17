@@ -12,4 +12,6 @@ info:
       repository: Logos/test-reporter
       alias: logos-ghes-logos
   x-cortex-groups:
+  - framework:dotnet
+  - language:javascript
   - parentrepository
