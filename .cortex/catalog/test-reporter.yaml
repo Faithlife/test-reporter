@@ -14,4 +14,3 @@ info:
   x-cortex-groups:
   - framework:dotnet
   - language:javascript
-  - parentrepository
