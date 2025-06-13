@@ -1,6 +1,7 @@
 openapi: 3.0.1
 info:
   title: test-reporter
+  description: Internal fork of dorny/test-reporter for annotating GHA Builds with test results.
   x-cortex-tag: test-reporter
   x-cortex-type: service
   x-cortex-owners:
