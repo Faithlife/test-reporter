@@ -1,8 +1,8 @@
 import * as fs from 'fs'
 import glob from 'fast-glob'
-import {FileContent, InputProvider, ReportInput} from './input-provider'
-import {listFiles as localListFiles, isInsideWorkTree} from '../utils/git'
-import {listFiles as apiListFiles} from '../utils/github-utils'
+import {FileContent, InputProvider, ReportInput} from './input-provider.js'
+import {listFiles as localListFiles, isInsideWorkTree} from '../utils/git.js'
+import {listFiles as apiListFiles} from '../utils/github-utils.js'
 import {GitHub} from '@actions/github/lib/utils'
 
 export class LocalFileProvider implements InputProvider {

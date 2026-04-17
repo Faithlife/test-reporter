@@ -20,6 +20,7 @@ This [Github Action](https://github.com/features/actions) displays test results 
 - Java / [JUnit](https://junit.org/)
 - JavaScript / [JEST](https://jestjs.io/) / [Mocha](https://mochajs.org/)
 - Python / [pytest](https://docs.pytest.org/en/stable/) / [unittest](https://docs.python.org/3/library/unittest.html)
+- PHP / [PHPUnit](https://phpunit.de/) / [Nette Tester](https://tester.nette.org/)
 - Ruby / [RSpec](https://rspec.info/)
 - Swift / xUnit
 
@@ -51,7 +52,7 @@ jobs:
       - run: npm test                 # run tests (configured to use jest-junit reporter)
 
       - name: Test Report
-        uses: dorny/test-reporter@v2
+        uses: dorny/test-reporter@v3
         if: ${{ !cancelled() }}       # run this step even if previous step failed
         with:
           name: JEST Tests            # Name of the check run which will be created
@@ -102,7 +103,7 @@ jobs:
   report:
     runs-on: ubuntu-latest
     steps:
-    - uses: dorny/test-reporter@v2
+    - uses: dorny/test-reporter@v3
       with:
         artifact: test-results            # artifact name
         name: JEST Tests                  # Name of the check run which will be created
@@ -113,7 +114,7 @@ jobs:
 ## Usage
 
 ```yaml
-- uses: dorny/test-reporter@v2
+- uses: dorny/test-reporter@v3
   with:
 
     # Name or regex of artifact containing test results
@@ -147,6 +148,7 @@ jobs:
     #   java-junit
     #   jest-junit
     #   mocha-json
+    #   phpunit-junit
     #   python-xunit
     #   rspec-json
     #   swift-xunit
@@ -192,6 +194,13 @@ jobs:
     # Set this action as failed if no test results were found
     fail-on-empty: 'true'
 
+    # Controls whether test report details are collapsed or expanded.
+    # Supported options:
+    #   auto: Collapse only if all tests pass (default behavior)
+    #   always: Always collapse the report details
+    #   never: Always expand the report details
+    collapsed: 'auto'
+
     # Relative path under $GITHUB_WORKSPACE where the repository was checked out.
     working-directory: ''
 
@@ -210,6 +219,7 @@ jobs:
 | time       | Test execution time [ms] |
 | url        | Check run URL            |
 | url_html   | Check run URL HTML       |
+| slug_prefix| Random anchor links slug prefix generated for the summary headers |
 
 ## Supported formats
 
@@ -312,6 +322,27 @@ Support for [JUnit](https://Junit.org/) XML is experimental - should work but it
 To have code annotations working properly, it's required your directory structure matches the package name.
 This is due to the fact Java stack traces don't contain a full path to the source file.
 Some heuristic was necessary to figure out the mapping between the line in the stack trace and an actual source file.
+</details>
+
+<details>
+  <summary>phpunit-junit</summary>
+
+[PHPUnit](https://phpunit.de/) can generate JUnit XML via CLI:
+`phpunit --log-junit reports/phpunit-junit.xml`
+
+</details>
+
+<details>
+  <summary>tester-junit</summary>
+
+[Nette Tester](https://tester.nette.org/) can generate JUnit XML via CLI:
+
+```bash
+tester -s -o junit tests/ > reports/tester-junit.xml
+```
+
+**Note:** Nette Tester's JUnit output doesn't include test suite names. The parser will use the report file name as the suite name and automatically group tests by directory structure.
+
 </details>
 
 <details>

@@ -1,9 +1,9 @@
 import * as core from '@actions/core'
-import {TestExecutionResult, TestRunResult, TestSuiteResult} from '../test-results'
-import {Align, formatTime, Icon, link, table} from '../utils/markdown-utils'
-import {DEFAULT_LOCALE} from '../utils/node-utils'
-import {getFirstNonEmptyLine} from '../utils/parse-utils'
-import {slug} from '../utils/slugger'
+import {TestExecutionResult, TestRunResult, TestSuiteResult} from '../test-results.js'
+import {Align, formatTime, Icon, link, table} from '../utils/markdown-utils.js'
+import {DEFAULT_LOCALE} from '../utils/node-utils.js'
+import {getFirstNonEmptyLine} from '../utils/parse-utils.js'
+import {slug} from '../utils/slugger.js'
 
 const MAX_REPORT_LENGTH = 65535
 const MAX_ACTIONS_SUMMARY_LENGTH = 1048576
@@ -11,6 +11,7 @@ const MAX_ACTIONS_SUMMARY_LENGTH = 1048576
 export interface ReportOptions {
   listSuites: 'all' | 'failed' | 'none'
   listTests: 'all' | 'failed' | 'none'
+  slugPrefix: string
   baseUrl: string
   onlySummary: boolean
   useActionsSummary: boolean
@@ -22,6 +23,7 @@ export interface ReportOptions {
 export const DEFAULT_OPTIONS: ReportOptions = {
   listSuites: 'all',
   listTests: 'all',
+  slugPrefix: '',
   baseUrl: '',
   onlySummary: false,
   useActionsSummary: true,
